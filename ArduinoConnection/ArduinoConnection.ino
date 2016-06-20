@@ -1,27 +1,32 @@
-#include <SoftwareSerial.h>
-
-int RX_PIN = 3;
-int TX_PIN = 2;
-int data = 0;
+#include <SoftwareSerial.h>   //Software Serial Port
+#define RxD 2
+#define TxD 3
 
 int IRSensor = 13;
 
-SoftwareSerial bluetoothSerial(RX_PIN, TX_PIN);
+SoftwareSerial blueToothSerial(RxD, TxD);
 
-void setup() {
-  // put your setup code here, to run once:
+void setup()
+{
   Serial.begin(9600);
-  bluetoothSerial.begin(9600);
-
-  pinMode(IRSensor, INPUT);
+  blueToothSerial.begin(9600);
+  pinMode(RxD, INPUT);
+  pinMode(TxD, OUTPUT);
+  pinMode(IRSensor, INPUT)
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  if (bluetoothSerial.available()) {
+void loop()
+{
 
-    data = digitalRead(IRSensor);
+  char recvChar;
+  while (1)
+  {
+    println(digitalRead(IRSensor));
     
-    bluetoothSerial.write((Char) Serial.read());
+    if (Serial.available())
+    { //check if there's any data sent from t he local serial terminal, you can add the other applications here
+      recvChar  = Serial.read();
+      blueToothSerial.print(recvChar);
+    }
   }
 }
